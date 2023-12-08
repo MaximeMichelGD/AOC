@@ -138,8 +138,8 @@ cards_rank_two = {"A": 14, "K": 13, "Q": 12, "J": 1, "T": 10, "9": 9, "8": 8, "7
 def determineTypeHandPartTwo(cardsReceived):
     cardsUnique = set({})
 
-    for x in range(len(cardsReceived)):
-        cardsUnique.add(cardsReceived[x])
+    for card in cardsReceived:
+        cardsUnique.add(card)
     
     if len(cardsUnique) == 5:
         if cardsReceived.count("J") == 0:
