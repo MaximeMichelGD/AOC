@@ -93,6 +93,8 @@ else:
     timeRace = int(times[0]+times[1]+times[2])
     distanceRecord = int(distances[0]+distances[1]+distances[2])
 
+first_stop = 0
+
 for j in range(1,timeRace+1):
     hold = j
     leftToRace = timeRace - hold
@@ -100,9 +102,10 @@ for j in range(1,timeRace+1):
     distanceMade = hold * leftToRace
 
     if distanceMade > distanceRecord:
-        result += 1
+        first_stop = j
+        break
 
-
+result = timeRace - (first_stop * 2) + 1
 
 # Part 2 Time
 print(f"Part 2 result : {result}")
