@@ -41,39 +41,32 @@ lines = [x for x in lst.split('\n')]
 
 result = 0
 
-instructions = []
+map = dict()
 
 for i in range(2,len(lines)): # On met en forme la data pour pouvoir la traiter + facilement
     #line = lines[i].strip().split()
     line = lines[i].split(" = ")
     line[1] = line[1].strip("(").strip(")").split(", ")
 
-    instructions.append(line)
+    map[line[0]] = line[1]
 
 current_block = "AAA"
-values = {"L": 0, "R": 1}
 result = 0
-j = -1
+i = 0
+steps = lines[0].strip()
 
 while current_block != "ZZZ":
-    j+=1
-    for k in range(len(instructions)):
-        if current_block == instructions[k][0]: # Check if current block = instruction map
-            current_block = instructions[k][1][values[lines[0][j]]]
-            result += 1
-            break
-        
-        if current_block == "ZZZ":
-            break
+    if lines[0][i % len(steps)] == "L": # Check if current block = instruction map
+        current_block = map[current_block][0]
+    else:
+        current_block = map[current_block][1]
 
-    if current_block == "ZZZ":
-        break
+    result += 1
+    i += 1
 
-    if j == len(lines[0])-1:
-        j = -1
     
 # Part 1 Time
-print(f"Part 1 result : {result}")
+print(f"Part 1 result : {result}") # Should be 15 989 (when not optimized, optimizing now)
 solutionEnd = time.time()
 partOneTime = solutionEnd - solutionStart
 print(f"Part 1 Time : {partOneTime}")
