@@ -14,7 +14,7 @@ import time
 
 # Set realDataSet to True to test with real dataset
 realDataSet = True
-day = 5
+day = 7
 
 print(f"* Day {day} *")
 
