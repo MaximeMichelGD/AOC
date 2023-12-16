@@ -1,9 +1,18 @@
 import os
 import string
 import pandas as pd
+import time
 
+
+startReading = time.time()
 lst = open(os.path.realpath(os.path.dirname(__file__)) + "\data.txt", "r").readlines()
 lines = len(lst)
+
+endReading = time.time()
+readingTime = startReading - endReading
+print(f"Time to read the file :  {readingTime}")
+
+solutionStart = time.time()
 
 TOTAL_AVAILABLE_SPACE = 70000000
 UNUSED_SPACE_NEEDED = 30000000
@@ -44,3 +53,7 @@ for key in directorys:
 print(f"Total size of directory under 100 000 is {sum_size}")
 
 print(f"The directory to delete to get enough free space is {dirToDelete} and has a size of {dirToDeleteSize}")
+
+solutionEnd = time.time()
+partOneTime = solutionEnd - solutionStart
+print(f"Time : {partOneTime}")
