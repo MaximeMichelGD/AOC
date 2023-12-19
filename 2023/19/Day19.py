@@ -69,8 +69,6 @@ for line in workflows:
     workflow[workflow_name] = workflow_line
 
 for part in partsAnalyze:
-    not_finalized = True
-
     # First -> workflow name = in
     instruction_name = "in"
 
@@ -141,13 +139,9 @@ for line in workflows:
     #print(f"workflowname {workflow_name} and {workflow_line}")
     workflow[workflow_name] = workflow_line
 
-fichier = open(os.path.realpath(os.path.dirname(__file__)) + "\dataretour.txt", "w")
 
 while Q:
     x,m,a,s,workflow_name = Q.popleft()
-    #print(x, m, a, s, workflow_name)
-
-    fichier.write(f"{x, m, a, s, workflow_name} \n")
 
     if workflow_name == "A":
         result += (x[1] - x[0] + 1) * (m[1] - m[0] + 1) * (a[1] - a[0] + 1) * (s[1] - s[0] + 1)
@@ -161,11 +155,10 @@ while Q:
     newBis = [0,0]
 
     for i in range(len(instructions)):
-        #print(f"instructions {instructions[i]}")
 
         if not ":" in instructions[i]:
                 workflow_name = instructions[i]
-                Q.append([x, m, a, s, workflow_name])
+                Q.append((x, m, a, s, workflow_name))
                 break
         else:
             splited = instructions[i].split(':')
@@ -176,67 +169,67 @@ while Q:
                         new = [0,0]
                         new[0] = x[0]
                         new[1] = workflow_value - 1
-                        Q.append([new, m, a, s, splited[1]])
+                        Q.append((new, m, a, s, splited[1]))
                         newBis = [0,0]
                         newBis[0] = workflow_value
                         newBis[1] = x[1]
-                        Q.append([newBis, m, a, s, workflow_name])
+                        Q.append((newBis, m, a, s, workflow_name))
                         break
                     elif x[0] > workflow_value: # La tranche est au dessus de workflow value et on cherche de <, on passe au next step
                         continue
                     elif x[1] < workflow_value: # la tranche est en dessous de workflow value et on cherche de <, on append donc la condition
                         print("append")
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
                 elif instructions[i][0]=='m':
                     if m[0] < workflow_value < m[1]: # il faut couper la tranche en 2
                         new = [0,0]
                         new[0] = m[0]
                         new[1] = workflow_value - 1
-                        Q.append([x, new, a, s, splited[1]])
+                        Q.append((x, new, a, s, splited[1]))
                         newBis = [0,0]
                         newBis[0] = workflow_value
                         newBis[1] = m[1]
-                        Q.append([x, newBis, a, s, workflow_name])
+                        Q.append((x, newBis, a, s, workflow_name))
                         break
                     elif m[0] > workflow_value: # La tranche est au dessus de workflow value et on cherche de <, on passe au next step
                         continue
                     elif m[1] < workflow_value: # la tranche est en dessous de workflow value et on cherche de <, on append donc la condition
                         print("append")
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
                 elif instructions[i][0]=='a':
                     if a[0] < workflow_value < a[1]: # il faut couper la tranche en 2
                         new = [0,0]
                         new[0] = a[0]
                         new[1] = workflow_value - 1
-                        Q.append([x, m, new, s, splited[1]])
+                        Q.append((x, m, new, s, splited[1]))
                         newBis = [0,0]
                         newBis[0] = workflow_value
                         newBis[1] = a[1]
-                        Q.append([x, m, newBis, s, workflow_name])
+                        Q.append((x, m, newBis, s, workflow_name))
                         break
                     elif a[0] > workflow_value: # La tranche est au dessus de workflow value et on cherche de <, on passe au next step
                         continue
                     elif a[1] < workflow_value: # la tranche est en dessous de workflow value et on cherche de <, on append donc la condition
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
                 elif instructions[i][0]=='s':
                     if s[0] < workflow_value < s[1]: # il faut couper la tranche en 2
                         new = [0,0]
                         new[0] = s[0]
                         new[1] = workflow_value - 1
-                        Q.append([x, m, a, new, splited[1]])
+                        Q.append((x, m, a, new, splited[1]))
                         newBis = [0,0]
                         newBis[0] = workflow_value
                         newBis[1] = s[1]
-                        Q.append([x, m, a, newBis, workflow_name])
+                        Q.append((x, m, a, newBis, workflow_name))
                         break
                     elif s[0] > workflow_value: # La tranche est au dessus de workflow value et on cherche de <, on passe au next step
                         continue
                     elif s[1] < workflow_value: # la tranche est en dessous de workflow value et on cherche de <, on append donc la condition
                         print("append")
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
             elif '>' in instructions[i]:
                 if instructions[i][0] == 'x':
@@ -244,64 +237,64 @@ while Q:
                         new = [0,0]
                         new[0] = workflow_value + 1
                         new[1] = x[1]
-                        Q.append([new, m, a, s, splited[1]])
+                        Q.append((new, m, a, s, splited[1]))
                         newBis = [0,0]
                         newBis[0] = x[0]
                         newBis[1] = workflow_value
-                        Q.append([newBis, m, a, s, workflow_name])
+                        Q.append((newBis, m, a, s, workflow_name))
                         break
                     elif x[1] < workflow_value: # La tranche est en dessous de workflow value et on cherche de >, on passe au next step
                         continue
                     elif x[0] > workflow_value: # la tranche est en dessus de workflow value et on cherche de >, on append donc la condition
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
                 elif instructions[i][0]=='m':
                     if m[0] < workflow_value < m[1]: # il faut couper la tranche en 2
                         new = [0,0]
                         new[0] = workflow_value + 1
                         new[1] = m[1]
-                        Q.append([x, new, a, s, splited[1]])
+                        Q.append((x, new, a, s, splited[1]))
                         newBis = [0,0]
                         newBis[0] = m[0]
                         newBis[1] = workflow_value
-                        Q.append([x, newBis, a, s, workflow_name])
+                        Q.append((x, newBis, a, s, workflow_name))
                         break
                     elif m[1] < workflow_value: # La tranche est en dessous de workflow value et on cherche de >, on passe au next step
                         continue
                     elif m[0] > workflow_value: # la tranche est en dessus de workflow value et on cherche de >, on append donc la condition
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
                 elif instructions[i][0]=='a':
                     if a[0] < workflow_value < a[1]: # il faut couper la tranche en 2
                         new = [0,0]
                         new[0] = workflow_value + 1
                         new[1] = a[1]
-                        Q.append([x, m, new, s, splited[1]])
+                        Q.append((x, m, new, s, splited[1]))
                         newBis = [0,0]
                         newBis[0] = a[0]
                         newBis[1] = workflow_value
-                        Q.append([x, m, newBis, s, workflow_name])
+                        Q.append((x, m, newBis, s, workflow_name))
                         break
                     elif a[1] < workflow_value: # La tranche est en dessous de workflow value et on cherche de >, on passe au next step
                         continue
                     elif a[0] > workflow_value: # la tranche est en dessus de workflow value et on cherche de >, on append donc la condition
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
                 elif instructions[i][0]=='s':
                     if s[0] < workflow_value < s[1]: # il faut couper la tranche en 2
                         new = [0,0]
                         new[0] = workflow_value + 1
                         new[1] = s[1]
-                        Q.append([x, m, a, new, splited[1]])
+                        Q.append((x, m, a, new, splited[1]))
                         newBis = [0,0]
                         newBis[0] = s[0]
                         newBis[1] = workflow_value
-                        Q.append([x, m, a, newBis, workflow_name])
+                        Q.append((x, m, a, newBis, workflow_name))
                         break
                     elif s[1] < workflow_value: # La tranche est en dessous de workflow value et on cherche de >, on passe au next step
                         continue
                     elif s[0] > workflow_value: # la tranche est en dessus de workflow value et on cherche de >, on append donc la condition
-                        Q.append([x, m, a, s, splited[1]])
+                        Q.append((x, m, a, s, splited[1]))
                         break
 
 # Part 2 Time
