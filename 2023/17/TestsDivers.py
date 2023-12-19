@@ -19,7 +19,14 @@ visited[row,column,direction] = sumOne
 
 print(visited)
 
-if visited[row,6,direction] < sumTwo:
+if visited[row,column,direction] < sumTwo:
     print(True)
 
 # if visited[row,column,direction] < sumTwo:
+    
+
+testDir = [0,1]
+
+testDirBis = testDir * 5
+
+print(testDirBis)

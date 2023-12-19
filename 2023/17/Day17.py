@@ -57,26 +57,25 @@ has_a_final_result = False
 #fichier = open(os.path.realpath(os.path.dirname(__file__)) + "\dataretour.txt", "a")
 
 while Q:
-    row,column,sum,direction,countDir = Q.popleft()
-    #print(f"r {row}, c {column}, sum {sum}, direction {direction}, countDir {countDir}")
-    #fichier.write(f"{row}, {column}, {sum}, {direction}, {countDir} \n")
+    row,column,sumDir,direction,countDir = Q.popleft()
+    #print(f"r {row}, c {column}, sumDir {sumDir}, direction {direction}, countDir {countDir}")
+    #fichier.write(f"{row}, {column}, {sumDir}, {direction}, {countDir} \n")
 
 
     try:
-        if visited[row,column,direction] <= sum: # On doit ajouter un contrôle savoir si on a déjà passé cette position mais avec une somme plus faible. Je suis en 3,5 dans deux cas, je vais en bas dans les deux cas, mais
-        # un coup j'ai accumulé 5 de score, l'autre 10, je fini avec celle qu'a 5. Celle de 10 sert à rien
+        if visited[row,column,direction] <= sumDir: # Permet de sortir de cette queue si on est déjà passé par cette position, dans la même direction, avec un score égal ou plus élevé
             continue
     except:
-        visited[row,column,direction] = sum
+        visited[row,column,direction] = sumDir
 
     if row == ROWS and column == COLUMNS:
         has_a_final_result = True
-        if sum <= result:
-            result = sum
+        if sumDir <= result:
+            result = sumDir
             continue
     
     if has_a_final_result:
-        if sum >= result:
+        if sumDir >= result:
             continue
 
     for i, dir in enumerate([[0,1], [0,-1], [1,0], [-1,0]]): # [x,y]
@@ -97,11 +96,11 @@ while Q:
         if direction == i :
             if new_count <= 3:
                 if 0<=new_row<=ROWS and 0<=new_column<=COLUMNS:
-                    new_sum = sum + int(grid[new_row][new_column])
+                    new_sum = sumDir + int(grid[new_row][new_column])
                     Q.append([new_row, new_column, new_sum, i, new_count])
         else:
             if 0<=new_row<=ROWS and 0<=new_column<=COLUMNS:
-                    new_sum = sum + int(grid[new_row][new_column])
+                    new_sum = sumDir + int(grid[new_row][new_column])
                     Q.append([new_row, new_column, new_sum, i, new_count])
 
 
