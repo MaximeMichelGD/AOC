@@ -139,9 +139,12 @@ for line in workflows:
     #print(f"workflowname {workflow_name} and {workflow_line}")
     workflow[workflow_name] = workflow_line
 
+fichier = open(os.path.realpath(os.path.dirname(__file__)) + "\dataretour.txt", "w")
 
 while Q:
     x,m,a,s,workflow_name = Q.popleft()
+
+    fichier.write(f"{workflow_name, x, m, a, s} \n")
 
     if workflow_name == "A":
         result += (x[1] - x[0] + 1) * (m[1] - m[0] + 1) * (a[1] - a[0] + 1) * (s[1] - s[0] + 1)
@@ -157,9 +160,9 @@ while Q:
     for i in range(len(instructions)):
 
         if not ":" in instructions[i]:
-                workflow_name = instructions[i]
-                Q.append((x, m, a, s, workflow_name))
-                break
+            workflow_name = instructions[i]
+            Q.append((x, m, a, s, workflow_name))
+            break
         else:
             splited = instructions[i].split(':')
             workflow_value = int(splited[0][2:])

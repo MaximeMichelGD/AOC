@@ -49,7 +49,7 @@ result = 99999999999999
 
 visited = dict()
 
-Q = deque([(0,0,0,0,0)]) # Deque: Row, Column, Somme, Dir, CountDir
+Q = deque([(0,0,0,0,0)]) # Deque: Row, Column, Somme, Dir, CountDir, visited
 # Besoin d'avoir un moyen d'identifier précédente direction, afin de ne pas partir à l'inverse (interdit selon l'énoncé) + avoir un moyen d'identifier si déjà 3 fois la même direction
 
 has_a_final_result = False
@@ -61,6 +61,7 @@ while Q:
     #print(f"r {row}, c {column}, sumDir {sumDir}, direction {direction}, countDir {countDir}")
     #fichier.write(f"{row}, {column}, {sumDir}, {direction}, {countDir} \n")
 
+    #print(f"row {row}, column {column}, sumDir {sumDir}, direction {direction}, countDir {countDir}, visited {visited}")
 
     try:
         if visited[row,column,direction] <= sumDir: # Permet de sortir de cette queue si on est déjà passé par cette position, dans la même direction, avec un score égal ou plus élevé
