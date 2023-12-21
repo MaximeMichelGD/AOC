@@ -14,7 +14,7 @@ import time
 from collections import deque
 
 # Set realDataSet to True to test with real dataset
-realDataSet = True
+realDataSet = False
 day = 12
 
 print(f"* Day {day} *")
@@ -114,7 +114,78 @@ solutionStart = time.time()
 
 result = 0
 
+dataFull = []
 
+for line in lines:
+    datatrois = ""
+    numberstrois = ""
+    data = line.split(" ")[0]
+    numbers = line.split(" ")[1]
+
+    for i in range(5):
+        datatrois += (data + "?")
+        numberstrois += (numbers + ",")
+
+    dataFull.append(datatrois[:-1] + " " + numberstrois[:-1])
+
+for line in dataFull:
+    data = line.split(" ")[0]
+    numbers = line.split(" ")[1].split(",")
+
+    #print(f"analyzing line {lines[x]}")
+
+    dataBis = []
+
+    questionsMarkIndexes = []
+    max_number = 0
+
+    for i in range(len(data)):
+        char = data[i]
+        dataBis.append(char)
+        if char == "?":
+            questionsMarkIndexes.append(i)
+
+    max_number = 2 ** len(questionsMarkIndexes)
+
+    bits_max_number = len(bin(max_number))-2
+    
+    for j in range(max_number):
+        bin_number = bin(j)[2:]
+
+        if len(bin_number) < bits_max_number:
+            diff = bits_max_number - len(bin_number) - 1
+            bin_number = "0" * diff + str(bin_number)
+        
+        #print(f"j {j} and bin_number {bin_number}")
+
+        text = bin_number.replace("1","#").replace("0",".")
+
+        #print(f"j {j} and bin_number {text}")
+
+        for k in range(len(text)):
+            #print(k)
+            dataBis[questionsMarkIndexes[k]] = text[k]
+
+        
+        dataFinal = "".join(dataBis).split(".")
+        dataFinalFinal = [x for x in dataFinal if x!=""]
+
+        #print(f"analyzing combinaison {dataBis} with {dataFinalFinal} and {numbers}")
+
+
+        good_combinaison = True
+        if len(dataFinalFinal) == len(numbers):
+            for z in range(len(dataFinalFinal)):
+                if len(dataFinalFinal[z]) == int(numbers[z]):
+                    continue
+                else:
+                    good_combinaison = False
+                    break
+        else:
+            good_combinaison = False
+
+        if good_combinaison:
+            result += 1
 
 # Part 2 Time
 print(f"Part 2 result : {result}")

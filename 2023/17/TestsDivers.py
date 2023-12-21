@@ -25,8 +25,8 @@ if visited[row,column,direction] < sumTwo:
 # if visited[row,column,direction] < sumTwo:
     
 
-testDir = [0,1]
+testDir = [[0,1]]
+testDirBis = [[0,1]]
 
-testDirBis = testDir * 5
 
-print(testDirBis)
+print(testDir + testDirBis)

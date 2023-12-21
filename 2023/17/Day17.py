@@ -49,19 +49,25 @@ result = 99999999999999
 
 visited = dict()
 
-Q = deque([(0,0,0,0,0)]) # Deque: Row, Column, Somme, Dir, CountDir, visited
+Q = deque([(0,0,0,-1,0,[[-1,-1]])]) # Deque: Row, Column, Somme, Dir, CountDir, alreadyVisited
 # Besoin d'avoir un moyen d'identifier précédente direction, afin de ne pas partir à l'inverse (interdit selon l'énoncé) + avoir un moyen d'identifier si déjà 3 fois la même direction
 
 has_a_final_result = False
 
 #fichier = open(os.path.realpath(os.path.dirname(__file__)) + "\dataretour.txt", "a")
 
+test = []
+
+visitedFinal = []
+x = 0
 while Q:
-    row,column,sumDir,direction,countDir = Q.popleft()
-    #print(f"r {row}, c {column}, sumDir {sumDir}, direction {direction}, countDir {countDir}")
+    x+=1
+
+    row,column,sumDir,direction,countDir,alreadyVisited = Q.popleft()
+    #print(alreadyVisited)
     #fichier.write(f"{row}, {column}, {sumDir}, {direction}, {countDir} \n")
 
-    #print(f"row {row}, column {column}, sumDir {sumDir}, direction {direction}, countDir {countDir}, visited {visited}")
+    #print(f"row {row}, column {column}, sumDir {sumDir}, direction {direction}, countDir {countDir}, visited {alreadyVisited}")
 
     try:
         if visited[row,column,direction] <= sumDir: # Permet de sortir de cette queue si on est déjà passé par cette position, dans la même direction, avec un score égal ou plus élevé
@@ -79,10 +85,13 @@ while Q:
         if sumDir >= result:
             continue
 
-    for i, dir in enumerate([[0,1], [0,-1], [1,0], [-1,0]]): # [x,y]
+    for i, dir in enumerate([[0,1], [0,-1], [1,0], [-1,0]]): # [r,c]
 
         new_row = row + dir[0]
         new_column = column + dir[1]
+
+        if [new_row,new_column] in alreadyVisited and 0<=new_row<=ROWS and 0<=new_column<=COLUMNS:
+            continue
         
         if i == direction:
             new_count = countDir + 1
@@ -97,13 +106,16 @@ while Q:
         if direction == i :
             if new_count <= 3:
                 if 0<=new_row<=ROWS and 0<=new_column<=COLUMNS:
+                    test = alreadyVisited + [[new_row,new_column]]
+                    
                     new_sum = sumDir + int(grid[new_row][new_column])
-                    Q.append([new_row, new_column, new_sum, i, new_count])
+                    Q.append([new_row, new_column, new_sum, i, new_count,test])
         else:
             if 0<=new_row<=ROWS and 0<=new_column<=COLUMNS:
+                    test = alreadyVisited + [[new_row,new_column]]
+                    
                     new_sum = sumDir + int(grid[new_row][new_column])
-                    Q.append([new_row, new_column, new_sum, i, new_count])
-
+                    Q.append([new_row, new_column, new_sum, i, new_count,test])
 
 # Part 1 Time
 print(f"Part 1 result : {result}")
